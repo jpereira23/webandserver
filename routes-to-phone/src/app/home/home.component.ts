@@ -7,7 +7,7 @@ import * as io from "socket.io-client";
 
 
 
-const URL = 'http://172.124.232.210:443/getupload';
+const URL = 'http://172.20.10.3:3000/getupload';
 
 @Component({
   selector: 'home',
@@ -19,7 +19,7 @@ const URL = 'http://172.124.232.210:443/getupload';
 export class HomeComponent{
   uploader: FileUploader = new FileUploader({url: URL});
   currentFile: string = "";
-  aURL = 'http://172.124.232.210:443';
+  aURL = 'http://172.20.10.3:3000';
   constructor(private dataService: DataService){
   }
 

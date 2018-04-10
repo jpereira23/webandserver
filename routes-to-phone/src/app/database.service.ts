@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class DatabaseService{
-  url: string = "http://172.124.232.210:443/dataB";
+  url: string = "http://172.20.10.3:3000/dataB";
   headers = new Headers();
   result: any;
   constructor(private _http: Http){

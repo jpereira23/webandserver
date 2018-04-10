@@ -1,44 +1,68 @@
-<ul class="nav nav-tabs">
-  <li class="active" *ngIf="section == 1"><a (click)="database()">Database</a></li>
-  <li *ngIf="section == 2"><a (click)="database()">Database</a></li>
-  <li class="active" *ngIf="section == 2"><a (click)="performance()">Performance Metrics</a></li>
-  <li *ngIf="section == 1"><a (click)="performance()">Performance Metrics</a></li>
+<ul class="nav nav-tabs" [ngSwitch]="section">
+  <li class="active" *ngSwitchCase="1"><a (click)="choice(1)">Database</a></li>
+  <li *ngSwitchCase="2"><a (click)="choice(1)">Database</a></li>
+  <li *ngSwitchCase="3"><a (click)="choice(1)">Database</a></li>
+  <li class="active" *ngSwitchCase="2"><a (click)="choice(2)">Auditor Performance</a></li>
+  <li *ngSwitchCase="1"><a (click)="choice(2)">Auditor Performance</a></li>
+  <li *ngSwitchCase="3"><a (click)="choice(2)">Auditor Performance</a></li>
+  <li class="active" *ngSwitchCase="3"><a (click)="choice(3)">Picker Performance</a></li>
+  <li *ngSwitchCase="1"><a (click)="choice(3)">Picker Performance</a></li>
+  <li *ngSwitchCase="2"><a (click)="choice(3)">Picker Performance</a></li>
+
 </ul>
+
+<div [ngSwitch]="section">
+  <div *ngSwitchCase="1">
+    Log:
+    <div class="well">
+      <div *ngFor="let aLog of logs">
+	{{ aLog }}
+      </div>   
+    </div>
+    <div class="well">
+      Database Stats: Using {{ used }}GB of {{ capacity }}GB
+    </div>
+
+    <button class="btn btn-danger" (click)="repair()">Repair</button>
+  </div>
+  <div *ngSwitchCase="2">
+    <auditor></auditor>
+  </div>
+  <div *ngSwitchCase="3">
+    <picker></picker>
+  </div>
+</div>
+<!--
 <div *ngIf="section == 1">
-Log:
-<div class="well">
-  <div *ngFor="let aLog of logs">
-    {{ aLog }}
-  </div>   
 </div>
-<div class="well">
-  Database Stats: Using {{ used }}GB of {{ capacity }}GB
-</div>
-
-<button class="btn btn-danger" (click)="repair()">Repair</button>
-</div>
-<div *ngIf="section == 2">
-  <div>
-    Performance metrics coming soon
-  </div>
-
-  <!--
-  <div class="panel panel-default">
-  <div class="panel-heading">
-  <select class="form-control" id="sell" [value]="selectedMonth" (input)="selectedMonth=$event.target.value">
-    <option *ngFor="let month of months" >{{ month }}</option>
-  </select>
-  </div>
-  <div class="panel-content">
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let date of dates">
-        {{ selectedMonth }} {{ date }}, 2018
-      </li>
+<div [hidden]="section != 2">
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Month<span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="#">January</a></li>
+      <li><a href="#">February</a></li>
+      <li><a href="#">March</a></li>
+      <li><a href="#">April</a></li>
+      <li><a href="#">May</a></li>
+      <li><a href="#">June</a></li>
+      <li><a href="#">July</a></li>
+      <li><a href="#">August</a></li>
+      <li><a href="#">September</a></li>
+      <li><a href="#">October</a></li>
+      <li><a href="#">November</a></li>
+      <li><a href="#">December</a></li>
     </ul>
+    <div [hidden]="!chartWeek1">
+      <canvas id="canvas1">{{ chartWeek1 }}</canvas>
+    </div>
+   
+
+   
+
+   
   </div>
-  </div>
-  -->
 </div>
+-->
 <br><br><br><br><br>
 
 

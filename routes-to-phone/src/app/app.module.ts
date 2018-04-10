@@ -7,7 +7,8 @@ import { HomeComponent } from './home/home.component';
 import { ViewComponent } from './view/view.component';
 import { DownloadComponent } from './download/download.component';
 import { AdminComponent } from './admin/admin.component';
-
+import { AuditorPerformanceComponent } from './auditorPerformance/auditorperformance.component';
+import { PickerPerformanceComponent } from './pickerPerformance/pickerperformance.component';
 
 import { HttpModule } from '@angular/http';
 import { DataService } from './data.service';
@@ -19,7 +20,9 @@ import { DatabaseService } from './database.service';
     HomeComponent,
     ViewComponent,
     DownloadComponent,
-    AdminComponent
+    AdminComponent,
+    AuditorPerformanceComponent,
+    PickerPerformanceComponent
   ],
   imports: [
     BrowserModule,
