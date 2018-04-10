@@ -1,0 +1,19 @@
+<div>
+
+  <table class="table table-dark">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Route Number</th>
+        <th scope="col">Stops</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let route of routes; let i = index">
+        <td>{{ route.routeNumber }}</td>
+        <td><div *ngFor="let stop of route.stops"><input type="checkbox" class="form-check-input" (click)="addStop(i, stop)"> {{stop}}<br></div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button type="button" class="btn btn-dark" (click)="saveChanges()">Save Changes</button>
+</div>

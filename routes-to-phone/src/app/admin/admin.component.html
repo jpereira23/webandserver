@@ -1,0 +1,44 @@
+<ul class="nav nav-tabs">
+  <li class="active" *ngIf="section == 1"><a (click)="database()">Database</a></li>
+  <li *ngIf="section == 2"><a (click)="database()">Database</a></li>
+  <li class="active" *ngIf="section == 2"><a (click)="performance()">Performance Metrics</a></li>
+  <li *ngIf="section == 1"><a (click)="performance()">Performance Metrics</a></li>
+</ul>
+<div *ngIf="section == 1">
+Log:
+<div class="well">
+  <div *ngFor="let aLog of logs">
+    {{ aLog }}
+  </div>   
+</div>
+<div class="well">
+  Database Stats: Using {{ used }}GB of {{ capacity }}GB
+</div>
+
+<button class="btn btn-danger" (click)="repair()">Repair</button>
+</div>
+<div *ngIf="section == 2">
+  <div>
+    Performance metrics coming soon
+  </div>
+
+  <!--
+  <div class="panel panel-default">
+  <div class="panel-heading">
+  <select class="form-control" id="sell" [value]="selectedMonth" (input)="selectedMonth=$event.target.value">
+    <option *ngFor="let month of months" >{{ month }}</option>
+  </select>
+  </div>
+  <div class="panel-content">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let date of dates">
+        {{ selectedMonth }} {{ date }}, 2018
+      </li>
+    </ul>
+  </div>
+  </div>
+  -->
+</div>
+<br><br><br><br><br>
+
+

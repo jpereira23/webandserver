@@ -1,0 +1,24 @@
+<div>
+  <label for="manifests">Add Manifest:</label>
+  <input type="file" ng2FileSelect [uploader]="uploader" (change)="uploading($event)">
+</div>
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th width="50%">Name</th>
+        <th>Progress</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of uploader.queue">
+        <td><strong>{{ item?.file?.name }}</strong></td>
+        <td nowrap>
+          <button type="button" class="upload" (click)="uploadRequest(item)" [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
+          <button type="button" class="cancel" (click)="item.cancel()" [disabled]="!item.isUploading">Cancel</button>
+          <button type="button" class="remove" (click)="item.remove()">Remove</button>
+          <button (click)="stuff(item)">Item</button>
+        </td>
+      </tr>
+  </table>
+</div>
