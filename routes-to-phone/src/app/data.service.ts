@@ -6,7 +6,8 @@ import { saveAs } from 'file-saver/FileSaver';
 
 @Injectable()
 export class DataService{
-url: string = "http://172.20.10.3:3000/api";
+//url: string = "http://172.20.10.3:3000/api";
+url: string = "http://localhost:3000/api";
   headers = new Headers();
   result: any; 
   constructor(private _http: Http){
@@ -29,7 +30,8 @@ url: string = "http://172.20.10.3:3000/api";
   }
 
   getApp(){
-    return this._http.get('http://172.20.10.3:3000/download').map(result => this.saveToFileSystem(result));
+  //return this._http.get('http://172.20.10.3:3000/download').map(result => this.saveToFileSystem(result));
+  return this._http.get('http://localhost:3000/download').map(result => this.saveToFileSystem(result));
   }
 
   saveToFileSystem(response){

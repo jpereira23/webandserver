@@ -33,6 +33,7 @@ var Route = function(){
 var CartPosition = function(){
   this.cartPosition = "";
   this.items = []; 
+  this.type = "";
 };
 
 var Item = function(){
@@ -41,6 +42,7 @@ var Item = function(){
   this.quantity = "";
   this.stopNumber = "";
   this.type = "";
+  this.cartPosition = "";
 };
 
 
@@ -233,11 +235,12 @@ function consumeItems(counter, item, cartPosition, text, route)
       item.quantity = text;
       break;
     case 4:
+      item.cartPosition = text;
       if(checkCartPosition(text, route) == true)
       {
         cartPosition = new CartPosition();
         cartPosition.cartPosition = text;
-        //cartPosition.route = route;
+	cartPosition.type = auditType;
         route.cartPositions.push(cartPosition);
       }
       else
@@ -250,8 +253,13 @@ function consumeItems(counter, item, cartPosition, text, route)
       break;
     case 6: 
       item.type = auditType;
-      route.cartPositions[route.cartPositions.length -1].items.push(item);
-      
+      if(route.cartPositions.length > 1 && isCurrentCartSameAuditType(item, auditType, route) == false){
+	var aCartPosition = new CartPosition();
+	aCartPosition.cartPosition = item.cartPosition;
+	aCartPosition.type = auditType;
+	route.cartPositions.push(aCartPosition);
+      }
+      route.cartPositions[route.cartPositions.length - 1].items.push(item);
       if(checkStopRoutes(item.stopNumber, route) == true)
       {
         route.stops.push(item.stopNumber);
@@ -260,6 +268,32 @@ function consumeItems(counter, item, cartPosition, text, route)
     default: 
       break;
   }
+}
+
+
+function isCurrentCartSameAuditType(item, auditType, route){
+  if(route.cartPositions.length > 1)
+  {
+    for(var i = 0; i < route.cartPositions.length; i++){
+      if(route.cartPositions[i].cartPosition == item.cartPosition){
+	if(route.cartPositions[i].type == auditType){
+	  return true;
+	}
+      }
+    }
+  }
+  return false;
+}
+
+function getIndexOfCartPosition(route, item){
+  for(var i = 0; i < route.cartPositions.length; i++)
+  {
+    if(item.cartPosition == route.cartPositions[i].cartPosition)
+    {
+      return i;
+    }
+  }
+  return (route.cartPositions.length - 1)
 }
 
 function checkStopRoutes(stopNumber, route)

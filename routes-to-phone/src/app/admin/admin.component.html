@@ -36,10 +36,7 @@
 <div *ngIf="section == 1">
 </div>
 <div [hidden]="section != 2">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Month<span class="caret"></span></button>
-    <ul class="dropdown-menu">
-      <li><a href="#">January</a></li>
+        <li><a href="#">January</a></li>
       <li><a href="#">February</a></li>
       <li><a href="#">March</a></li>
       <li><a href="#">April</a></li>
@@ -51,8 +48,7 @@
       <li><a href="#">October</a></li>
       <li><a href="#">November</a></li>
       <li><a href="#">December</a></li>
-    </ul>
-    <div [hidden]="!chartWeek1">
+   <div [hidden]="!chartWeek1">
       <canvas id="canvas1">{{ chartWeek1 }}</canvas>
     </div>
    

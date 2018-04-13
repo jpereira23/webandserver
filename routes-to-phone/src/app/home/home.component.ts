@@ -7,7 +7,8 @@ import * as io from "socket.io-client";
 
 
 
-const URL = 'http://172.20.10.3:3000/getupload';
+//const URL = 'http://172.20.10.3:3000/getupload';
+const URL = 'http://localhost:3000/getupload';
 
 @Component({
   selector: 'home',
