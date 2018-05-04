@@ -105,6 +105,82 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
         });
   });
 
+  router.post('/sendEndOfShift', (req, res) => {
+    var auditor = req.body;
+    for(var i = 0; i < auditor.routes.length; i++){
+      var tmpRoute = parseInt(auditor.routes[i].routeNumber);
+      tmpRoute = tmpRoute - 100;
+      var counter = 0;
+      while(tmpRoute >= 0)
+      {
+	tmpRoute = tmpRoute - 100;
+	counter++;
+      }
+
+      var year = 2000 + auditor.routes[i].date.year;
+      var d = new Date(year, auditor.routes[i].date.month-1, auditor.routes[i].date.day, 0, 0, 0);
+      switch(counter){
+	case 1:
+	  if(d.getDay() == 6){
+	    console.log(auditor.routes[i].routeNumber + " is going in 100 series for Saturday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
+	  }
+	  //else if(d.getDay() == 0){
+
+	  //}
+	  break;
+	case 2:
+	  if(d.getDay() == 0){
+	    console.log(auditor.routes[i].routeNumber + " is going in 200 series for Sunday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
+	  }
+	  //else if(d.getDay() == 1){
+
+	  //}
+	  break;
+	case 3:
+	  if(d.getDay() == 1){
+	    console.log(auditor.routes[i].routeNumber + " is going in 300 series for Monday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
+	  }
+	  //else if(d.getDay() == 2){
+
+	  //}
+	  break;
+	case 4: 
+	  if(d.getDay() == 2){
+	    console.log(auditor.routes[i].routeNumber + " is going in 400 series for Tuesday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
+	  }
+	  //else if(d.getDay() == 3){
+
+	  //}
+	  break;
+	case 5:
+	  if(d.getDay() == 3){
+	    console.log(auditor.routes[i].routeNumber + " is going in 500 series for Wednesday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
+	  }
+	  //else if(d.getDay() == 4){
+
+	  //}
+
+	  break;
+	case 6: 
+	  if(d.getDay() == 4){
+	    console.log(auditor.routes[i].routeNumber + " is going in 600 series for Thursday or " + d.getDay);
+	  }
+	  //else if(d.getDay() == 5){
+
+	  //}
+	  break;
+	case 7: 
+	  if(d.getDay() == 5){
+	    console.log(auditor.routes[i].routeNumber + " is going in 700 series for Friday or " + d.getDay);
+	  }
+	  //else if(d.getDay() == 6){
+
+	 // }
+	  break;
+      }
+    }
+  });
+
   router.post('/addPicker', (req, res) => {
     var picker = req.body;
     console.log(picker);
