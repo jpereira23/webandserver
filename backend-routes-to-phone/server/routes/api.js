@@ -22,9 +22,18 @@ var routesArray = [];
 var cartPositionsArray = [];
 var storedRoutes = [];
 var auditType = "";
+
+var RouteDate = function(){
+  this.day = 0;
+  this.month = 0;
+  this.year = 0;
+  this.hour = 0;
+  this.minute = 0; 
+};
+
 var Route = function(){
   this.routeNumber = "";
-  this.date = "";
+  this.date = new RouteDate();
   this.cartPositions = [];
   this.stops = [];
   this.hotStops = [];
@@ -44,6 +53,7 @@ var Item = function(){
   this.type = "";
   this.cartPosition = "";
 };
+
 
 
 const sendError = (err, res) => {
@@ -79,6 +89,7 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
 
   router.post('/updateForHotRoute', (req, res) => {
     var route = req.body;
+    console.log(route);
       db.collection('route')
         .update({'routeNumber': route.routeNumber}, {'routeNumber': req.body.routeNumber, 'date': req.body.date, 'cartPositions': req.body.cartPositions, 'stops': req.body.stops, 'hotStops': req.body.hotStops}, { $multi: true }, function(err, route){
            if(err)
@@ -92,6 +103,32 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
             res.json(route);
            } 
         });
+  });
+
+  router.post('/addPicker', (req, res) => {
+    var picker = req.body;
+    console.log(picker);
+    db.collection('pickers')
+      .save(picker, function(err, picker){
+	if(err){
+	  res.send(err);
+	}else{
+	  res.json(picker);
+	}
+      });
+  });
+
+  router.get('/getPickers', (req, res) => {
+    db.collection('pickers').find().toArray().then((picker) => {
+      response.data = picker;
+      res.json(response);
+    }).catch((err) => {
+      sendError(err, res); 
+    });
+  });
+
+  router.post('/removeAll', (req, res) => { 
+    db.collection('route').remove({});
   });
 
   router.post('/compileManifest', (req, res) => {
@@ -199,8 +236,8 @@ function isRoute(routesNumber, routes)
 
 function addRoute(theBulk)
 {
-  console.log("HELLO WORLD");
   db.collection('route').bulkWrite(theBulk, {ordered: false});
+
 }
 
 function pageHeader(counter, route, text)
@@ -214,7 +251,15 @@ function pageHeader(counter, route, text)
       auditType = text;
       break;
     case 7:
-      route.date = text;
+      console.log("HELLO");
+      var date = new RouteDate();
+      date.month = parseInt(text.slice(0, 2));
+      date.day = parseInt(text.slice(3, 5));
+      date.year = parseInt(text.slice(6,8));
+      date.hour = parseInt(text.slice(9,11));
+      date.minute = parseInt(text.slice(12, 14));
+      route.date = date;
+      console.log("HELLLLLLLO");
       break;
     default: 
       break;

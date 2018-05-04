@@ -63,6 +63,7 @@ app.get('/download', function(req, res){
 
 
 app.options('/getupload', function(req, res, next) {
+  console.log("hello");
   if(req.method == 'OPTIONS')
   {
     var headers = {};
@@ -78,6 +79,7 @@ app.options('/getupload', function(req, res, next) {
 });
 
 app.options('/download', function(req, res, next) {
+  console.log("hello");
   if(req.method == 'OPTIONS')
   {
     var headers = {};
