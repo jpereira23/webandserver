@@ -133,7 +133,9 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
 
   router.post('/sendEndOfShift', (req, res) => {
     var auditor = req.body;
-    var aDate = new aDate();
+    var theDate = new aDate();	
+    var todaysDate = new Date();
+    theDate.date = "" + todaysDate.getFullYear() + (todaysDate.getMonth()+1) +  todaysDate.getDate();
     for(var i = 0; i < auditor.routes.length; i++){
       var tmpRoute = parseInt(auditor.routes[i].routeNumber);
       tmpRoute = tmpRoute - 100;
@@ -146,8 +148,7 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
       var year = 2000 + auditor.routes[i].date.year;
       var d = new Date(year, auditor.routes[i].date.month-1, auditor.routes[i].date.day, 0, 0, 0);
 
-      organizeDateForRouteStore(aDate, counter, year, d, auditor.routes[i], auditor.firstName, auditor.lastName);
-      
+      organizeDateForRouteStore(theDate, counter, year, d, auditor.routes[i], auditor.firstName, auditor.lastName);
     }
   });
 
@@ -269,54 +270,53 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
 });
 
 
-function organizeDateForRouteStore(aDate, counter, year, date, route, firstName, lastName){
+function organizeDateForRouteStore(theDate, counter, year, date, route, firstName, lastName){
   switch(counter){
 	case 1:
-	  
 	  if(date.getDay() == 0){
-	    console.log(route.routeNumber + " is going in 100 series for Sunday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	    addRouteToDate(theDate, route, firstName, lastName);
 	  }
 	  break;
 	case 2:
 	  if(date.getDay() == 1){
-	    console.log(route.routeNumber + " is going in 200 series for Monday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	    addRouteToDate(theDate, route, firstName, lastName);
 	  }
 	  break;
 	case 3:
 	  if(date.getDay() == 2){
-	    console.log(route.routeNumber + " is going in 300 series for Tuesday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	    addRouteToDate(theDate, route, firstName, lastName);
 	  }
 	  break;
 	case 4: 
 	  if(date.getDay() == 3){
-	    console.log(route.routeNumber + " is going in 400 series for Wednesday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	    addRouteToDate(theDate, route, firstName, lastName);
 	  }
 	  break;
 	case 5:
 	  if(date.getDay() == 4){
-	    console.log(route.routeNumber + " is going in 500 series for Thursday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	    addRouteToDate(theDate, route, firstName, lastName);
 	  }
 	  break;
 	case 6: 
 	  if(date.getDay() == 5){
-	    console.log(route.routeNumber + " is going in 600 series for Friday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	    addRouteToDate(theDate, route, firstName, lastName);
 	  }
 	  break;
 	case 7: 
 	  if(date.getDay() == 6){
-	     console.log(route.routeNumber + " is going in 700 series for Saturday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	    addRouteToDate(theDate, route, firstName, lastName);
 	  }
 	  break;
       }
   
 }
 
-function addRouteToDate(aDate, route, firstName, lastName){
-  var aRoute = new Route();
-  aRoute.routeNumber = route.routeNumber;
+function addRouteToDate(theDate, route, firstName, lastName){
+  var theRoute = new aRoute();
+  theRoute.routeNumber = route.routeNumber;
   for(var i = 0; i < route.statuss.length; i++){
     var theStatus = new aStatus();
-    theStatus = route.statuss[i].status;
+    theStatus.status = route.statuss[i].status;
     for(var j = 0; j < route.statuss[i].stops.length; j++){
       theStatus.auditorFirstName = firstName;
       theStatus.auditorLastName = lastName;
@@ -324,8 +324,8 @@ function addRouteToDate(aDate, route, firstName, lastName){
       theStop.stopNumber = route.statuss[i].stops[j].stopNumber;
       for(var k = 0; k < route.statuss[i].stops[j].cartPositions.length; k++){
 	var theCartPosition = new aCartPosition();
-	theCartPosition.pickerName = route.statuss[i].stops[j].cartPosition[k].pickerName;
-	theCartPosition.cartPositionName = route.statuss[i].stops[j].cartPosition[k].cartPosition;
+	theCartPosition.pickerName = route.statuss[i].stops[j].cartPositions[k].pickerName;
+	theCartPosition.cartPositionName = route.statuss[i].stops[j].cartPositions[k].cartPosition;
 	for(var l = 0; l < route.statuss[i].stops[j].cartPositions[k].items.length; l++){
 	  var aItem = new Item();
 	  aItem.itemName = route.statuss[i].stops[j].cartPositions[k].items[l].itemName;
@@ -339,9 +339,10 @@ function addRouteToDate(aDate, route, firstName, lastName){
       }
       theStatus.stops.push(theStop);
     }
-    aRoute.statuss.push(theStatus);
+    theRoute.statuss.push(theStatus);
   }
-  aDate.routes.push(aRoute);
+  theDate.routes.push(theRoute);
+  console.log(theDate);
 }
 
 function isRoute(routesNumber, routes)
