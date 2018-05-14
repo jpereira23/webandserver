@@ -54,7 +54,33 @@ var Item = function(){
   this.cartPosition = "";
 };
 
+var aDate = function(){
+  this.date = "";
+  this.routes = [];
+};
 
+var aRoute = function(){
+  this.routeNumber = "";
+  this.statuss = [];
+};
+
+var aStatus = function(){
+  this.auditorFirstName = "";
+  this.auditorLastName = "";
+  this.statusName = "";
+  this.stops = [];
+};
+
+var aStop = function(){
+  this.cartPositions = [];
+  this.stopNumber = "";
+};  
+
+var aCartPosition = function(){
+  this.pickerName = "";
+  this.items = [];
+  this.cartPositionName = "";
+};
 
 const sendError = (err, res) => {
   response.status = 501;
@@ -107,6 +133,7 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
 
   router.post('/sendEndOfShift', (req, res) => {
     var auditor = req.body;
+    var aDate = new aDate();
     for(var i = 0; i < auditor.routes.length; i++){
       var tmpRoute = parseInt(auditor.routes[i].routeNumber);
       tmpRoute = tmpRoute - 100;
@@ -116,68 +143,11 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
 	tmpRoute = tmpRoute - 100;
 	counter++;
       }
-
       var year = 2000 + auditor.routes[i].date.year;
       var d = new Date(year, auditor.routes[i].date.month-1, auditor.routes[i].date.day, 0, 0, 0);
-      switch(counter){
-	case 1:
-	  if(d.getDay() == 6){
-	    console.log(auditor.routes[i].routeNumber + " is going in 100 series for Saturday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
-	  }
-	  //else if(d.getDay() == 0){
 
-	  //}
-	  break;
-	case 2:
-	  if(d.getDay() == 0){
-	    console.log(auditor.routes[i].routeNumber + " is going in 200 series for Sunday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
-	  }
-	  //else if(d.getDay() == 1){
-
-	  //}
-	  break;
-	case 3:
-	  if(d.getDay() == 1){
-	    console.log(auditor.routes[i].routeNumber + " is going in 300 series for Monday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
-	  }
-	  //else if(d.getDay() == 2){
-
-	  //}
-	  break;
-	case 4: 
-	  if(d.getDay() == 2){
-	    console.log(auditor.routes[i].routeNumber + " is going in 400 series for Tuesday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
-	  }
-	  //else if(d.getDay() == 3){
-
-	  //}
-	  break;
-	case 5:
-	  if(d.getDay() == 3){
-	    console.log(auditor.routes[i].routeNumber + " is going in 500 series for Wednesday or " + d.getUTCMonth() + "/" + d.getUTCDay() + "/" + d.getUTCFullYear());
-	  }
-	  //else if(d.getDay() == 4){
-
-	  //}
-
-	  break;
-	case 6: 
-	  if(d.getDay() == 4){
-	    console.log(auditor.routes[i].routeNumber + " is going in 600 series for Thursday or " + d.getDay);
-	  }
-	  //else if(d.getDay() == 5){
-
-	  //}
-	  break;
-	case 7: 
-	  if(d.getDay() == 5){
-	    console.log(auditor.routes[i].routeNumber + " is going in 700 series for Friday or " + d.getDay);
-	  }
-	  //else if(d.getDay() == 6){
-
-	 // }
-	  break;
-      }
+      organizeDateForRouteStore(aDate, counter, year, d, auditor.routes[i], auditor.firstName, auditor.lastName);
+      
     }
   });
 
@@ -298,6 +268,82 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
   
 });
 
+
+function organizeDateForRouteStore(aDate, counter, year, date, route, firstName, lastName){
+  switch(counter){
+	case 1:
+	  
+	  if(date.getDay() == 0){
+	    console.log(route.routeNumber + " is going in 100 series for Sunday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	  }
+	  break;
+	case 2:
+	  if(date.getDay() == 1){
+	    console.log(route.routeNumber + " is going in 200 series for Monday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	  }
+	  break;
+	case 3:
+	  if(date.getDay() == 2){
+	    console.log(route.routeNumber + " is going in 300 series for Tuesday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	  }
+	  break;
+	case 4: 
+	  if(date.getDay() == 3){
+	    console.log(route.routeNumber + " is going in 400 series for Wednesday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	  }
+	  break;
+	case 5:
+	  if(date.getDay() == 4){
+	    console.log(route.routeNumber + " is going in 500 series for Thursday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	  }
+	  break;
+	case 6: 
+	  if(date.getDay() == 5){
+	    console.log(route.routeNumber + " is going in 600 series for Friday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	  }
+	  break;
+	case 7: 
+	  if(date.getDay() == 6){
+	     console.log(route.routeNumber + " is going in 700 series for Saturday or " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear());
+	  }
+	  break;
+      }
+  
+}
+
+function addRouteToDate(aDate, route, firstName, lastName){
+  var aRoute = new Route();
+  aRoute.routeNumber = route.routeNumber;
+  for(var i = 0; i < route.statuss.length; i++){
+    var theStatus = new aStatus();
+    theStatus = route.statuss[i].status;
+    for(var j = 0; j < route.statuss[i].stops.length; j++){
+      theStatus.auditorFirstName = firstName;
+      theStatus.auditorLastName = lastName;
+      var theStop = new aStop();
+      theStop.stopNumber = route.statuss[i].stops[j].stopNumber;
+      for(var k = 0; k < route.statuss[i].stops[j].cartPositions.length; k++){
+	var theCartPosition = new aCartPosition();
+	theCartPosition.pickerName = route.statuss[i].stops[j].cartPosition[k].pickerName;
+	theCartPosition.cartPositionName = route.statuss[i].stops[j].cartPosition[k].cartPosition;
+	for(var l = 0; l < route.statuss[i].stops[j].cartPositions[k].items.length; l++){
+	  var aItem = new Item();
+	  aItem.itemName = route.statuss[i].stops[j].cartPositions[k].items[l].itemName;
+	  aItem.wrin = route.statuss[i].stops[j].cartPositions[k].items[l].wrin;
+	  aItem.quantity = route.statuss[i].stops[j].cartPositions[k].items[l].quantity;
+	  aItem.stopNumber = route.statuss[i].stops[j].cartPositions[k].items[l].type;
+	  aItem.type = route.statuss[i].stops[j].cartPositions[k].items[l].cartPosition;
+	  theCartPosition.items.push(aItem);
+	}
+	theStop.cartPositions.push(theCartPosition);
+      }
+      theStatus.stops.push(theStop);
+    }
+    aRoute.statuss.push(theStatus);
+  }
+  aDate.routes.push(aRoute);
+}
+
 function isRoute(routesNumber, routes)
 { 
   for(var i = 0; i < routes.length; i++)
@@ -327,7 +373,6 @@ function pageHeader(counter, route, text)
       auditType = text;
       break;
     case 7:
-      console.log("HELLO");
       var date = new RouteDate();
       date.month = parseInt(text.slice(0, 2));
       date.day = parseInt(text.slice(3, 5));
@@ -335,7 +380,6 @@ function pageHeader(counter, route, text)
       date.hour = parseInt(text.slice(9,11));
       date.minute = parseInt(text.slice(12, 14));
       route.date = date;
-      console.log("HELLLLLLLO");
       break;
     default: 
       break;
