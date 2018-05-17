@@ -29,6 +29,10 @@ url: string = "http://localhost:3000/api";
     return this._http.post(this.url + '/updateForHotRoute', JSON.stringify(route), { headers: this.headers}).map(res => res.json());
   }
 
+  getArchives(){
+    return this._http.get(this.url + '/theArchives').map(result => this.result = result.json().data);
+  }
+
   getApp(){
   //return this._http.get('http://172.20.10.3:3000/download').map(result => this.saveToFileSystem(result));
   return this._http.get('http://localhost:3000/download').map(result => this.saveToFileSystem(result));

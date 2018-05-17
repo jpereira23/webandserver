@@ -56,8 +56,16 @@ var Item = function(){
 
 var aDate = function(){
   this.date = "";
+  this.auditors = []; 
+  this.theDate = new Date();
   this.routes = [];
+  this.errors = [];
 };
+
+var Auditor = function(){
+  this.firstName = "";
+  this.lastName = "";
+}
 
 var aRoute = function(){
   this.routeNumber = "";
@@ -135,9 +143,19 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
     var auditor = req.body;
     var theDate = new aDate();	
     var todaysDate = new Date();
+    var anAuditor = new Auditor();
+    anAuditor.firstName = auditor.firstName;
+    anAuditor.lastName = auditor.lastName;
+    
+    theDate.theDate = todaysDate;
+    theDate.errors = auditor.errors;
     theDate.date = "" + todaysDate.getFullYear() + (todaysDate.getMonth()+1) +  todaysDate.getDate();
-    for(var i = 0; i < auditor.routes.length; i++){
-      var tmpRoute = parseInt(auditor.routes[i].routeNumber);
+    
+    if(checkIfAuditor(theDate, anAuditor) == false){
+      theDate.auditors.push(anAuditor);
+    }
+    for(var i = 0; i < auditor.auditedRoutes.length; i++){
+      var tmpRoute = parseInt(auditor.auditedRoutes[i].routeNumber);
       tmpRoute = tmpRoute - 100;
       var counter = 0;
       while(tmpRoute >= 0)
@@ -145,11 +163,36 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
 	tmpRoute = tmpRoute - 100;
 	counter++;
       }
-      var year = 2000 + auditor.routes[i].date.year;
-      var d = new Date(year, auditor.routes[i].date.month-1, auditor.routes[i].date.day, 0, 0, 0);
 
-      organizeDateForRouteStore(theDate, counter, year, d, auditor.routes[i], auditor.firstName, auditor.lastName);
+      var year = 2000 + auditor.routes[i].date.year;
+      var d = new Date(year, auditor.auditedRoutes[i].date.month-1, auditor.auditedRoutes[i].date.day, 0, 0, 0);
+      organizeDateForRouteStore(theDate, counter, year, d, auditor.auditedRoutes[i], auditor.firstName, auditor.lastName);
     }
+    db.collection('archives').find({ date: theDate.date }).toArray().then((val) => {
+      if(val.length != 0){
+	console.log(val[0]);
+      }
+      else{
+	db.collection('archives').save(theDate, function(err, zeDate){
+	  if(err){
+	    res.send(err);
+	  }else{
+	    res.json(zeDate);
+	  }
+	});
+      }
+    }).catch((err) => {
+      sendError(err, res);
+    });	
+  });
+
+  router.get('/theArchives', (req, res) => { 
+    db.collection('archives').find().toArray().then((theArchives) => {
+      response.data = theArchives;
+      res.json(response);
+    }).catch((err) => {
+      sendError(err, res);
+    });
   });
 
   router.post('/addPicker', (req, res) => {
@@ -269,6 +312,15 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
   
 });
 
+function checkIfAuditor(theDate, theAuditor){
+  for(var i = 0; i < theDate.auditors.length; i++)
+  {
+    if(theDate.auditors[i].firstName == theAuditor.firstName){
+      return true;
+    }
+  }
+  return false;
+}
 
 function organizeDateForRouteStore(theDate, counter, year, date, route, firstName, lastName){
   switch(counter){
@@ -324,7 +376,8 @@ function addRouteToDate(theDate, route, firstName, lastName){
       theStop.stopNumber = route.statuss[i].stops[j].stopNumber;
       for(var k = 0; k < route.statuss[i].stops[j].cartPositions.length; k++){
 	var theCartPosition = new aCartPosition();
-	theCartPosition.pickerName = route.statuss[i].stops[j].cartPositions[k].pickerName;
+	theCartPosition.pickerName = route.statuss[i].stops[j].cartPositions[k].picker.name;
+	console.log(route.statuss[i].stops[j].cartPositions[k]);
 	theCartPosition.cartPositionName = route.statuss[i].stops[j].cartPositions[k].cartPosition;
 	for(var l = 0; l < route.statuss[i].stops[j].cartPositions[k].items.length; l++){
 	  var aItem = new Item();
@@ -342,7 +395,6 @@ function addRouteToDate(theDate, route, firstName, lastName){
     theRoute.statuss.push(theStatus);
   }
   theDate.routes.push(theRoute);
-  console.log(theDate);
 }
 
 function isRoute(routesNumber, routes)

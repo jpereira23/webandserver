@@ -9,10 +9,12 @@ import { DownloadComponent } from './download/download.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuditorPerformanceComponent } from './auditorPerformance/auditorperformance.component';
 import { PickerPerformanceComponent } from './pickerPerformance/pickerperformance.component';
+import { ChartComponent } from './chartPage/chart.component';
 
 import { HttpModule } from '@angular/http';
 import { DataService } from './data.service';
 import { DatabaseService } from './database.service';
+import { SessionService } from './session.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { DatabaseService } from './database.service';
     DownloadComponent,
     AdminComponent,
     AuditorPerformanceComponent,
-    PickerPerformanceComponent
+    PickerPerformanceComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { DatabaseService } from './database.service';
     HttpModule
   ],
   providers: [DataService,
-              DatabaseService],
+	      DatabaseService,
+	      SessionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

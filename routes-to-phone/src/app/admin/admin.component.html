@@ -1,64 +1,22 @@
-<ul class="nav nav-tabs" [ngSwitch]="section">
-  <li class="active" *ngSwitchCase="1"><a (click)="choice(1)">Database</a></li>
-  <li *ngSwitchCase="2"><a (click)="choice(1)">Database</a></li>
-  <li *ngSwitchCase="3"><a (click)="choice(1)">Database</a></li>
-  <li class="active" *ngSwitchCase="2"><a (click)="choice(2)">Auditor Performance</a></li>
-  <li *ngSwitchCase="1"><a (click)="choice(2)">Auditor Performance</a></li>
-  <li *ngSwitchCase="3"><a (click)="choice(2)">Auditor Performance</a></li>
-  <li class="active" *ngSwitchCase="3"><a (click)="choice(3)">Picker Performance</a></li>
-  <li *ngSwitchCase="1"><a (click)="choice(3)">Picker Performance</a></li>
-  <li *ngSwitchCase="2"><a (click)="choice(3)">Picker Performance</a></li>
+<div>
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Auditor
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li *ngFor="let auditor of arrayOfAuditors; let i = index"><a href="#" (click)="setAuditor(i); false">{{ auditor.firstName }} {{ auditor.lastName }}</a></li>
+    </ul>
+  </div>
 
-</ul>
-
-<div [ngSwitch]="section">
-  <div *ngSwitchCase="1">
-    Log:
-    <div class="well">
-      <div *ngFor="let aLog of logs">
-	{{ aLog }}
-      </div>   
+  <div *ngIf="auditor != null">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Month
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+	<li *ngFor="let months of auditor.arrayOfMonths; let j = index"><a href="#" (click)="setMonth(j); false">{{ months }}</a></li>
+      </ul>
     </div>
-    <div class="well">
-      Database Stats: Using {{ used }}GB of {{ capacity }}GB
-    </div>
-
-    <button class="btn btn-danger" (click)="repair()">Repair</button>
   </div>
-  <div *ngSwitchCase="2">
-    <auditor></auditor>
-  </div>
-  <div *ngSwitchCase="3">
-    <picker></picker>
-  </div>
+  <div *ngIf="aMonth != 0">
+    <button class="btn btn-primary" type="button" (click)="compileGraph()">Compile Graphs</button>
+  </div>	
 </div>
-<!--
-<div *ngIf="section == 1">
-</div>
-<div [hidden]="section != 2">
-        <li><a href="#">January</a></li>
-      <li><a href="#">February</a></li>
-      <li><a href="#">March</a></li>
-      <li><a href="#">April</a></li>
-      <li><a href="#">May</a></li>
-      <li><a href="#">June</a></li>
-      <li><a href="#">July</a></li>
-      <li><a href="#">August</a></li>
-      <li><a href="#">September</a></li>
-      <li><a href="#">October</a></li>
-      <li><a href="#">November</a></li>
-      <li><a href="#">December</a></li>
-   <div [hidden]="!chartWeek1">
-      <canvas id="canvas1">{{ chartWeek1 }}</canvas>
-    </div>
-   
-
-   
-
-   
-  </div>
-</div>
--->
-<br><br><br><br><br>
-
-

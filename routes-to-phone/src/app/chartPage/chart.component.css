@@ -1,0 +1,10 @@
+.routesView{
+  height: 225px;
+  overflow: auto; 
+}
+
+.errorsView{
+  height: 225px;
+  overflow: auto;
+  margin: -20px -15px 0px -15px;
+}
