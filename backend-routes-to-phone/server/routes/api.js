@@ -10,6 +10,8 @@ const Q = require('q');
 const fs = require('fs');
 const pdfreader = require('pdfreader');
 const http = require('http');
+const schedule = require('node-schedule');
+
       
 
 //const server = http.Server(router); 
@@ -52,6 +54,8 @@ var Item = function(){
   this.stopNumber = "";
   this.type = "";
   this.cartPosition = "";
+  this.alocation = "";
+  this.storeNumber = "";
 };
 
 var aDate = function(){
@@ -121,6 +125,13 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
     });
   });
 
+  
+  var j = schedule.scheduleJob('9 * * *', function(fireDate){
+    db.collection('route').remove({});
+    routesArray = [];
+    
+  });
+
   router.post('/updateForHotRoute', (req, res) => {
     var route = req.body;
     console.log(route);
@@ -145,9 +156,11 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
     var todaysDate = new Date();
     var anAuditor = new Auditor();
     anAuditor.firstName = auditor.firstName;
+    console.log(anAuditor.firstName);
     anAuditor.lastName = auditor.lastName;
-    
-    theDate.theDate = todaysDate;
+    console.log(anAuditor.lastName);
+    theDate.theDate = new Date(auditor.clockIn);
+    console.log(theDate.theDate.toString());
     theDate.errors = auditor.errors;
     theDate.date = "" + todaysDate.getFullYear() + (todaysDate.getMonth()+1) +  todaysDate.getDate();
     
@@ -170,7 +183,6 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
     }
     db.collection('archives').find({ date: theDate.date }).toArray().then((val) => {
       if(val.length != 0){
-	console.log(val[0]);
       }
       else{
 	db.collection('archives').save(theDate, function(err, zeDate){
@@ -252,6 +264,7 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
         routesArray = [];
       }
       else if(item.text){
+
         if(globalCounter >= 0 && globalCounter <= 17)
         {
           if(globalCounter == 0)
@@ -292,6 +305,7 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
         {
           if(itemCounter == 8)
           {
+	    consumeItems(itemCounter, anItem, cartPosition, item.text, routesArray[routesArray.length -1]);
             itemCounter = 0;
           }
           else if(itemCounter == 0)
@@ -377,7 +391,6 @@ function addRouteToDate(theDate, route, firstName, lastName){
       for(var k = 0; k < route.statuss[i].stops[j].cartPositions.length; k++){
 	var theCartPosition = new aCartPosition();
 	theCartPosition.pickerName = route.statuss[i].stops[j].cartPositions[k].picker.name;
-	console.log(route.statuss[i].stops[j].cartPositions[k]);
 	theCartPosition.cartPositionName = route.statuss[i].stops[j].cartPositions[k].cartPosition;
 	for(var l = 0; l < route.statuss[i].stops[j].cartPositions[k].items.length; l++){
 	  var aItem = new Item();
@@ -470,6 +483,10 @@ function consumeItems(counter, item, cartPosition, text, route)
       item.wrin = text;
       break;
     case 6: 
+      item.storeNumber = text; 
+      break; 
+    case 8: 
+      item.alocation = text;
       item.type = auditType;
       if(route.cartPositions.length > 1 && isCurrentCartSameAuditType(item, auditType, route) == false){
 	var aCartPosition = new CartPosition();
@@ -482,7 +499,7 @@ function consumeItems(counter, item, cartPosition, text, route)
       {
         route.stops.push(item.stopNumber);
       }
-      break; 
+      break;
     default: 
       break;
   }

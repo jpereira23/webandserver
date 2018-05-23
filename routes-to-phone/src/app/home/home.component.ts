@@ -35,6 +35,9 @@ export class HomeComponent{
 
   uploadRequest(item: any)
   {
+    var aDate = new Date(); 
+    var filename = "" + aDate.getFullYear() + (aDate.getMonth()+1) + aDate.getDate() + aDate.getHours() + aDate.getMinutes() + aDate.getSeconds() + ".pdf";
+    item.file.name = filename;
     item.upload();
     this.uploader.onCompleteItem = (item: any, response: any, status:any, headers: any) => {
     this.dataService.generateManifest('./pdfs/' + item.file.name).subscribe();

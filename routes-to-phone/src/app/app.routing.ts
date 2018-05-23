@@ -8,11 +8,16 @@ import { AdminComponent } from './admin/admin.component';
 import { AuditorPerformanceComponent } from './auditorPerformance/auditorperformance.component';
 import { PickerPerformanceComponent } from './pickerPerformance/pickerperformance.component';
 import { ChartComponent } from './chartPage/chart.component';
+import { ReliabilityComponent } from './reliability/reliability.component';
 
 const appRoutes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomeComponent
+  },
+  {
+    path: 'reliability',
+    component: ReliabilityComponent
   },
   {
     path: 'view',

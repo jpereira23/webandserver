@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ViewComponent } from './view/view.component';
 import { DownloadComponent } from './download/download.component';
+import { ReliabilityComponent } from './reliability/reliability.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuditorPerformanceComponent } from './auditorPerformance/auditorperformance.component';
 import { PickerPerformanceComponent } from './pickerPerformance/pickerperformance.component';
@@ -25,6 +26,7 @@ import { SessionService } from './session.service';
     AdminComponent,
     AuditorPerformanceComponent,
     PickerPerformanceComponent,
+    ReliabilityComponent,
     ChartComponent
   ],
   imports: [
