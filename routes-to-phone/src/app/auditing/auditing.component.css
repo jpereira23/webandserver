@@ -1,0 +1,46 @@
+.sub-navbar{
+  margin: auto;
+  color: white;
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  padding: 0px 0px 10px 0px;
+  border-bottom: 1px solid rgba(255, 255, 255, 1);
+}
+
+.header{
+  display: inline;
+  position: relative;
+  padding: 0px 300px 0px 0px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.navButton{
+  border: none;
+  background-color: #002F65;
+}
+
+.navButton-on{
+  border: none;
+  background-color: #002F65;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.navButton:focus{
+  outline: none;
+}
+
+.navButton:hover{
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.sub-tab{
+  display: inline;
+  padding: 0px 10px 0px 10px;
+}
+/*
+.left-work{
+  padding: 0px 0px 0px 300px;
+}
+*/

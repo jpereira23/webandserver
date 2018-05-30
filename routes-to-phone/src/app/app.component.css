@@ -1,0 +1,58 @@
+.navbar{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: white; 
+  border-radius: 0px;
+}
+
+.container-logo{
+  background-color: white;
+}
+
+.nav-button{
+  border: none;
+}
+
+.nav-button-on{
+  border: none;
+  color: rgba(0, 0, 0, 0.50);
+}
+
+.nav-button:focus{
+  outline: none;
+}
+
+.nav-button:hover{
+  color: rgba(0, 0, 0, 0.50);
+}
+
+
+
+.the-image{
+  position: relative;
+  width: 100px;
+  height: 50px;
+}
+
+.martin-brower-logo{
+  position: relative;
+  padding: 0px 0px 0px 0px;
+}
+
+
+.nav-tab{
+  display: inline; 
+  padding: 0px 0px 0px 0px;
+}
+
+.nav-tabs-container{
+  display: flex;
+  justify-content: center;
+
+  background-color: white;
+  position: relative;
+  margin: 12px 0px 0px 0px;
+  padding: 0px 525px 0px 400px;
+}
+

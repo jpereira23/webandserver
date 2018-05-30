@@ -5,6 +5,7 @@ export class Item{
   stopNumber: string;
   type: string;
   cartPosition: string;
+  location: string;
 
   constructor(){
     this.itemName = "";
@@ -13,6 +14,7 @@ export class Item{
     this.stopNumber = "";
     this.type = "";
     this.cartPosition = "";
+    this.location ="";
   }
 
   convertJSON(anItem: any){
@@ -22,5 +24,6 @@ export class Item{
     this.stopNumber = anItem.stopNumber;
     this.type = anItem.type;
     this.cartPosition = anItem.cartPosition;
+    this.location = anItem.alocation;
   }
 }

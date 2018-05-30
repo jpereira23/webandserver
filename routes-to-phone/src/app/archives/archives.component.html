@@ -1,0 +1,29 @@
+<div class="sub-navbar">
+  <div class="sub-tab">
+    <button *ngIf="graphSelected == false" class="navButton" (click)="viewGraph()">
+    Graph
+    </button>
+    <button *ngIf="graphSelected == true" class="navButton-on" (click)="viewGraph()">
+    Graph
+    </button>
+  </div>
+  <div class="sub-tab">
+    <button *ngIf="manifestSelected == false" class="navButton" (click)="viewManifest()">
+    Manifests
+    </button>
+    <button *ngIf="manifestSelected == true" class="navButton-on" (click)="viewManifest()">
+    Manifests
+    </button>
+
+  </div>
+  <div class="sub-tab">
+    <button class="navButton" (click)="viewEndOfShift()">
+    End Of Shift
+    </button>
+  </div>
+  <div class="line">
+
+  </div>
+</div>
+
+<router-outlet></router-outlet>

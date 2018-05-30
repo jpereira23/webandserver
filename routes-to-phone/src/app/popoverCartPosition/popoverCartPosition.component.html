@@ -1,0 +1,16 @@
+<div style="color: black;">
+  <div class="header">
+    Cart Positions
+  </div>
+  <div *ngIf="selectedRoute != null">
+    <div *ngFor="let status of selectedRoute.statuss; let j = index">
+      <div *ngFor="let stop of status.stops; let k = index">
+	<div class="content" *ngFor="let cartPosition of stop.cartPositions; let l = index">
+	  <button class="cartPositions" (click)="cartPositionSelected(j, k, l)">
+	    {{ cartPosition.cartPosition }} {{ stop.stopNumber }} {{ status.statusName }}
+	  </button>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>

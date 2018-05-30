@@ -1,0 +1,60 @@
+
+<!--
+<div class="aContainer">
+  <div class="filterWrapper">
+      <popover-content #myPopover placement="bottom" [closeOnClickOutside]="true">
+	<popover-auditor [arrayOfAuditors]="arrayOfAuditors" (selectedAuditor)="setAuditor($event)"></popover-auditor>
+      </popover-content>
+      <button class="aFilter" [popover]="myPopover">Auditor</button>
+  </div>
+
+  <div class="filterWrapper1">
+      <popover-content #myPopover1 placement="bottom" [closeOnClickOutside]="true">
+	<popover-date (selectedDate)="setDate($event)"></popover-date>
+      </popover-content>
+      <button class="aFilter" [disabled]="!auditorSelected" [popover]="myPopover1">Date</button>
+  </div>
+
+  <div class="filterWrapper2">
+    <popover-content #myPopover2 placement="bottom" [closeOnClickOutside]="true">
+      <popover-route [selectedAuditor]="selectedAuditor" [selectedDate]="selectedDate" (selectedRoute)="setRoute($event)"></popover-route>
+    </popover-content>
+    <button class="aFilter1" [disabled]="!dateSelected" [popover]="myPopover2">Route</button>
+  </div>
+
+  <div class="filterWrapper3">
+    <popover-content #myPopover3 placement="bottom" [closeOnClickOutside]="true">
+      <popover-cartposition [selectedRoute]="selectedRoute" (selectedCartPosition)="setCartPosition($event)"></popover-cartposition>
+    </popover-content>
+    <button class="aFilter1" [disabled]="!routeSelected" [popover]="myPopover3">Cart Position</button>
+  </div>
+</div>
+ 
+
+<item-content [selectedCartPosition]="selectedCartPosition"></item-content>
+  -->
+
+<div class="aContainer">
+  <div class="filterWrapper">
+    <popover-content #myPopover1 placement="bottom" [closeOnClickOutside]="true">
+      <popover-date (selectedDate)="setDate($event)"></popover-date>
+    </popover-content>
+    <button class="aFilter" [popover]="myPopover1">Select Date</button>
+  </div>
+</div>
+<div class="content">
+  Auditors
+
+  <div class="table-content">
+    <div class="name">
+      Name
+    </div>
+  </div>
+  <div class="data-content">
+    <div class="name-data" *ngFor="let auditor of filteredArrayOfAuditors; let i = index">
+      <button class="auditor-button" (click)="auditorSelection(i)">
+	{{ auditor.firstName }} {{ auditor.lastName }}
+      </button>
+    </div>
+  </div>
+</div>

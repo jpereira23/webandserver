@@ -1,0 +1,32 @@
+<div class="aContainer">
+  <div class="filterWrapper">
+    <popover-content #myPopover2 placement="bottom" [closeOnClickOutside]="true">
+      <popover-route [selectedAuditor]="archivesService.getAuditor()" [selectedDate]="archivesService.getDate()" (selectedRoute)="setRoute($event)"></popover-route>
+    </popover-content>
+    <button class="aFilter1" [popover]="myPopover2">Select Route</button>
+  </div>
+  <div class="filterWrapper1">
+    <popover-content #myPopover3 placement="bottom" [closeOnClickOutside]="true">
+      <popover-cartposition [selectedRoute]="selectedRoute" (selectedCartPosition)="setCartPosition($event)"></popover-cartposition>
+    </popover-content>
+    <button class="aFilter1" [popover]="myPopover3" [disabled]="!routeSelected">Select Cart Position</button>
+  </div>
+</div>
+<div class="content" *ngIf="selectedCartPosition != null">
+  Items
+
+  <table style="width: 100%;">
+    <tr class="aHeader">
+      <th>Item Name</th>
+      <th>WRIN</th>
+      <th>Quantity</th>
+      <th>Picker</th>
+    </tr>
+    <tr *ngFor="let item of selectedCartPosition.items">
+      <td>{{ item.itemName }}</td>
+      <td>{{ item.wrin }} </td>
+      <td>{{ item.quantity }} </td>
+      <td>{{ selectedCartPosition.pickerName }}</td>
+    </tr>
+  </table>
+</div>

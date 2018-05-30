@@ -1,0 +1,10 @@
+<div style="color: black;">
+  <div class="header">
+    Auditors
+  </div>
+  <div class="content" *ngFor="let auditor of arrayOfAuditors; let i = index">
+    <button class="auditors" (click)="auditorSelected(i)">
+    {{ auditor.firstName }} {{ auditor.lastName }} 
+    </button>
+  </div>
+</div>

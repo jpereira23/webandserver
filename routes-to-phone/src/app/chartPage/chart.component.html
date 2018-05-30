@@ -1,70 +1,11 @@
-<div class="well well-lg col-sm-8"> 
-  <div [hidden]="!chartWeek1">
+  <div class="thePage" [hidden]="!isSet">
       {{ this.chartLabel }}
       <canvas id="canvas1">{{ chartWeek1 }}</canvas>
-    </div>
-</div>
-<div class="col-sm-4" *ngIf="sessionService.currentDates.length != 0">
- <div class="row routesView well well-lg">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Date<span class="caret"></span></button>
-    <ul class="dropdown-menu">
-      <li *ngFor="let anDate of sessionService.currentDates; let i = index"><a href="#" (click)="dateSelected(i); false">{{ anDate.theDate | date: 'MM/dd/yyyy' }}</a></li>
-   </ul>
   </div>
-  <div *ngIf="routes.length > 0 && statusView == false && itemView == false">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Route<span class="caret"></span></button>
-      <ul class="dropdown-menu">
-	<li *ngFor="let route of routes; let j = index"><a href="#" (click)="selectRoute(j); false">{{ route.routeNumber }}</a></li>
-      </ul>
-    </div>
-  </div>
-  <div *ngIf="statusView == true">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Stop<span class="caret"></span></button>
-      <ul class="dropdown-menu">
-	<li *ngFor="let stop of selectedStops; let m = index"><a href="#" (click)="stopSelected(m); false">{{ stop }}</a></li>
-      </ul>
-    </div>
-    <ul class="list-group">
-      <li *ngFor="let status of statuss; let k = index;" class="list-group-item">
-	{{ status.status }}
-	<div *ngFor="let cartPosition of status.stops[stopIndex].cartPositions; let n = index" class="panel panel-default" (click)="cartPositionSelected(n, k)">
-	  <div class="panel-body">{{ cartPosition.cartPositionName }}, Audited By: {{ cartPosition.pickerName }}</div>
-	</div>
-      </li>
-    </ul>
-    <ul class="pager">
-      <li><a href="#" (click)="previous(); false">Previous</a></li>
-    </ul>
 
-  </div>
-  <div *ngIf="itemView == true">
-    <div *ngFor="let item of theItem" class="panel panel-default">
-      <div class="panel-heading">{{item.itemName}}</div>
-      <div class="panel-body">WRIN:{{item.wrin}}<br>Quantity:{{item.quantity}}</div>
-  </div>
-    <ul class="pager">
-      <li><a href="#" (click)="previous(); false">Previous</a></li>
-    </ul>
-</div>
-</div>
-<div class="row well well-lg errorsView">
-  Error Report for date picked
-  <ul>
-    <li *ngFor="let typeError of errorTypes; let i = index">
-      {{ typeError }}:
-      <ul>
-	<div *ngFor="let error of errors">
-	  <li *ngIf="error.errorIndex == i">
-	    {{ error.message }}	
-	  </li>
-	</div>
-      </ul>
-    </li>
-  </ul>
-</div>
+
+
+
 
 
 

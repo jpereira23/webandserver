@@ -3,21 +3,19 @@ import { Route } from './route';
 import { Error } from './error';
 
 export class aDate{
-  date: string;
   theDate: Date;
   routes: Array<Route>;
   errors: Array<Error>;
 
   constructor(){
-    this.date = "";
     this.theDate = new Date();
     this.routes = [];
     this.errors = [];
   }
 
   convertJSON(anDate: any){
-    this.date = anDate.date;
-    this.theDate = anDate.theDate;
+    console.log(anDate.theDate);
+    this.theDate = new Date(anDate.theDate);
     for(var i = 0; i < anDate.routes.length; i++)
     {
       var anRoute = new Route();
@@ -32,12 +30,21 @@ export class aDate{
       this.errors.push(anError);
     }
   }
+  
+  isMonth(enteredMonth: number){
+    console.log("the month on file is " + this.theDate.getMonth());
+    if(this.theDate.getMonth() == enteredMonth){
+      return true;
+    }
+    return false;
+  }
 
   getNumberOfItemsAudited(){
-    var count = 0;
+    var itemsAudited = 0;
     for(var i = 0; i < this.routes.length; i++){
-      count = count + this.routes[i].getNumberOfItemsAudited();
-    }
-    return count;
-  } 
+      itemsAudited = itemsAudited + this.routes[i].getNumberOfItemsAudited();
+    } 
+    return itemsAudited;
+  }
+  
 }

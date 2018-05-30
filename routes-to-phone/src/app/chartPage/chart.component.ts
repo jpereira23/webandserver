@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../session.service';
 
@@ -19,82 +19,67 @@ import { Error } from '../models/error';
 
 export class ChartComponent{
 
-  data = [];
-  backgroundColors = [];
-  borderColors = [];
-  labels = [];
-  label = "";
-  chartWeek1 = [];
-  errorLabel = "";
-  errorBackgroundColors = [];
-  errorBorderColors = [];
-  errorData = [];
-  routes: Array<Route> = [];
-  statuss: Array<Status> = [];
-  statusView: boolean = false;
-  itemView: boolean = false;
-  selectedStops: Array<string> = [];
-  routeIndex: number = 0;
-  stopIndex: number = 0; 
-  theItem: Array<Item> = [];
-  errors: Array<Error> = [];
-  errorTypes: Array<string> = ["Missing Cart Handle", "Damaged Cart Wheel", "Mis-Picks", "Wrap Issue", "Bun Error", "Shorts", "Wrong Cart", "Overages"];
+  @Input() data: Array<string> = [];
+  @Input() backgroundColors: Array<string> = [];
+  @Input() borderColors: Array<string> = [];
+  @Input() labels: Array<string> = [];
+  @Input() label: string = "";
+  @Input() errorData: Array<string> = [];
+  @Input() errorBackgroundColors: Array<string> = [];
+  @Input() errorBorderColors: Array<string> = [];
+  @Input() errorLabel: string = "";
+  chartWeek1: Chart = null;
+  isSet: boolean = false;
 
   constructor(private route: ActivatedRoute, private sessionService: SessionService){
   }
 
-  dateSelected(i: number){
-    this.routes = this.sessionService.currentDates[i].routes;
-    this.errors = this.sessionService.currentDates[i].errors;
-    console.log(this.routes);
+  ngOnChanges(){
+    this.isSet = true;
+    this.chartWeek1 = null;
+    this.chartWeek1 = new Chart('canvas1', {
+	type: 'line', 
+	data: {
+	  labels: this.labels, 
+	  datasets: [{
+	    label: this.label,
+	    data: this.data,
+	    backgroundColor: this.backgroundColors,
+	    borderColor: this.borderColors,
+	    fontColor: "#FFFFFF",
+	    borderWidth: 1
+	    } /*{
+	      label: this.errorLabel,
+	      data: this.errorData,
+	      backgroundColor: this.errorBackgroundColors,
+	      borderColor: this.errorBorderColors,
+	      borderWidth: 1
+	      }*/]
+	},
+	options: {
+	  legend: {
+	      labels:{
+		fontColor: "#FFFFFF"
+	      } 
+	    },
+	    scales: {
+	    yAxes: [{
+	      gridLines:{
+		display: true,
+		color: "#FFFFFF"
+	      },
+	      ticks: {
+		beginAtZero: true,
+		color: "#FFFFFF",
+		fontColor: "#FFFFFF"
+	      }
+	      }],
+	  }
+	}
+    });
   }
-
-  selectRoute(j: number){
-    this.routeIndex = j;
-    this.statuss = this.routes[j].statuss;
-    for(var k = 0; k < this.statuss[0].stops.length; k++)
-    {
-      this.selectedStops.push(this.statuss[0].stops[k].stopNumber); 
-    }
-    this.statusView = true;
-  }
-
-  previous(){
-    if(this.itemView == true){
-      this.itemView = false;
-      this.statusView = true;
-    }
-    else if(this.statusView == true){
-      this.statusView = false;
-    }
-  }
-
-  stopSelected(m: number){
-    this.stopIndex = m; 
-  }
-
-  cartPositionSelected(cartIndex: number, statusIndex: number){
-    this.theItem = this.routes[this.routeIndex].statuss[statusIndex].stops[this.stopIndex].cartPositions[cartIndex].items; 
-    this.statusView = false;
-    this.itemView = true;
-   
-  }
-
-
   ngOnInit(){
-
-    
-    this.route.queryParams.subscribe(params => {
-      this.data = params["data"];
-      this.backgroundColors = params["backgroundColors"];
-      this.borderColors = params["borderColors"];
-      this.labels = params["labels"];
-      this.label = params["label"];
-      this.errorData = params["errorData"];
-      this.errorBackgroundColors = params["errorBackgroundColors"];
-      this.errorBorderColors = params["errorBorderColors"];
-      this.errorLabel = params["errorLabel"];
-      this.chartWeek1 = new Chart('canvas1', {
+     this.chartWeek1 = new Chart('canvas1', {
 	type: 'line', 
 	data: {
 	  labels: this.labels, 
@@ -104,27 +89,31 @@ export class ChartComponent{
 	    backgroundColor: this.backgroundColors,
 	    borderColor: this.borderColors,
 	    borderWidth: 1
-	    }, {
+	    } /* {
 	      label: this.errorLabel,
 	      data: this.errorData,
+	      fontColor: "#FFFFFF",
 	      backgroundColor: this.errorBackgroundColors,
 	      borderColor: this.errorBorderColors,
 	      borderWidth: 1
-	    }]
+	      }*/]
 	},
 	options: {
 	  scales: {
 	    yAxes: [{
+	      gridLines:{
+		display: true,
+		color: "#FFFFFF"
+	      },
 	      ticks: {
-		beginAtZero: true
+		beginAtZero: true,
+		fontColor: "#FFFFFF"
 	      }
 	    }]
 	  }
 	}
-      });
     });
   }
-
 }
 
 

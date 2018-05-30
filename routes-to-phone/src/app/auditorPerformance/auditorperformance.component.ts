@@ -26,6 +26,7 @@ export class AuditorPerformanceComponent {
   }
 
   ngOnInit(){
+  /*
     this.dataService.getArchives().subscribe(res => this.compileDates(res)); 
     this.chartWeek1 = new Chart('canvas1', {
     type: 'bar',
@@ -105,8 +106,10 @@ export class AuditorPerformanceComponent {
         }
     }
 }); 
-  }
+  */
 
+  }
+  /*
   setAuditor(i: number){
   console.log(i);
     this.auditor = this.arrayOfAuditors[i];
@@ -125,4 +128,5 @@ export class AuditorPerformanceComponent {
   setDate(i: number){
     console.log("index is " + i);
   }
+  */
 }

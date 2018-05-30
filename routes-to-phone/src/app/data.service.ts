@@ -29,8 +29,8 @@ url: string = "http://localhost:3000/api";
     return this._http.post(this.url + '/updateForHotRoute', JSON.stringify(route), { headers: this.headers}).map(res => res.json());
   }
 
-  getArchives(){
-    return this._http.get(this.url + '/theArchives').map(result => this.result = result.json().data);
+  getAuditors(){
+    return this._http.get(this.url + '/theAuditors').map(result => this.result = result.json().data);
   }
 
   getApp(){

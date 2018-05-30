@@ -1,0 +1,28 @@
+<div class="sub-navbar">
+  <!--
+  <div class="header">
+    Auditing
+  </div>
+  -->
+  <div class="sub-tab left-work">
+    <button *ngIf="manifestSelected == false" class="navButton" (click)="viewUpload()">
+      Load Manifest
+    </button>
+    <button *ngIf="manifestSelected == true" class="navButton-on" (click)="viewUpload()">
+      Load Manifest
+    </button>
+  </div>
+  <div class="sub-tab">
+    <button *ngIf="downloadSelected == false" class="navButton" (click)="viewDownload()">
+      Download Manifest App
+    </button>
+    <button *ngIf="downloadSelected == true" class="navButton-on" (click)="viewDownload()">
+      Download Manifest App
+    </button>
+
+  </div>
+  <div class="line">
+  </div>
+</div>
+
+<router-outlet></router-outlet>

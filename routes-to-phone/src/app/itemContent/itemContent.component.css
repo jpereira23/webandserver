@@ -1,0 +1,122 @@
+.aContainer{
+  position: relative;
+  padding: 10px 0px 0px 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.aFilter1{
+  background-color: #002F65;
+  position: relative;
+  margin: 0px 40px 0px 40px;
+  padding: 5px 30px 5px 30px;
+  border-radius: 2px;
+  font-family: BlinkMacSystemFont;
+  font-weight: lighter;
+}
+
+.aFilter1:focus{
+  outline: none;
+}
+.aFilter1:hover{
+  background-color: #FFFFFF;
+  position: relative;
+  margin: 0px 40px 0px 40px;
+  padding: 5px 30px 5px 30px;
+  border-radius: 2px;
+  font-family: BlinkMacSystemFont;
+  font-weight: lighter;
+  color: #002F65;
+}
+
+.filterWrapper{
+  color: white;
+}
+
+.filterWrapper1{
+  color: white;
+}
+
+.content{
+  height: 60%;
+  width: 100%;
+  margin: 5% auto;
+  color: white;
+  padding: 0% 10%;
+  overflow: auto;
+}
+/*
+.name{
+  padding: 5% 20% 1% 2%;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline;
+} 
+
+*/
+.name-data{
+  flex-grow: 3;
+  margin: 0px 100px 0px 0px;
+  border: 1px solid white;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline;
+}
+
+.aHeader{
+  border-bottom: 1px solid white;
+}
+
+td{
+  padding: 1%;
+}
+
+.wrin-data{
+  flex-grow: 1;
+  border: 1px solid white;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline;
+}
+
+.quantity-data{
+  flex-grow: 1;
+  border: 1px solid white;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline;
+}
+
+.picked-data{
+  border: 1px solid white;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline;
+}
+
+.table-content{
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  justify-content: space-between;
+} 
+
+.data-content{
+  display: flex;
+  justify-content: space-between;
+}
+/*
+.wrin{
+  padding: 5% 10% 1% 2%;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline;
+} 
+
+.quantity{
+  padding: 5% 10% 1% 2%;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline;
+}
+
+.picked{
+  padding: 5% 0% 1% 2%;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline;
+
+}
+
+*/

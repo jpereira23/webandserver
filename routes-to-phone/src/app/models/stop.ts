@@ -14,7 +14,9 @@ export class Stop{
     for(var i = 0; i < anStop.cartPositions.length; i++){
       var aCartPosition = new CartPosition();
       aCartPosition.convertJSON(anStop.cartPositions[i]);
-      this.cartPositions.push(aCartPosition);
+      if(aCartPosition.audited == true){
+	this.cartPositions.push(aCartPosition);
+      }
     }
   }
 

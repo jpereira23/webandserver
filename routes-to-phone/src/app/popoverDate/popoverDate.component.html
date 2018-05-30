@@ -1,0 +1,35 @@
+<div style="color: black;">
+  <div class="header">
+    <div>
+      <button class="right" (click)="clickLeft()"><i class="arrow-right"></i></button>
+    </div>
+    <div class="months"><strong>{{currentMonth}}</strong></div>
+    <div>
+      <button class="left" (click)="clickRight()"><i class="arrow-left"></i></button>
+    </div>
+  </div>
+    <div class="daysOfWeek" *ngFor="let dayOfWeek of daysOfWeek">
+      <div class="dayOfWeek">
+
+	<button class="dateButton" [disabled]="true">
+      {{ dayOfWeek }}
+	</button>
+      </div>
+    </div>
+    <div class="datesOfWeek" *ngFor="let date of arrayOfDates; let i = index">
+      <div class="dateOfWeek">
+      <span *ngIf="date != null && date.getDate() < 10">
+	<button class="dateButton" (click)="dateSelected(i)">
+	0{{ date.getDate() }}
+	</button>
+      </span>
+      <span *ngIf="date != null && date.getDate() >= 10">
+	<button class="dateButton" (click)="dateSelected(i)">	
+	{{ date.getDate() }}
+	</button>
+      </span>
+      <span *ngIf="date != null && date.getDay() == 6">
+      </span>
+      </div>
+    </div>
+</div>

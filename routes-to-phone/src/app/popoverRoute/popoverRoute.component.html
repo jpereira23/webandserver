@@ -1,0 +1,10 @@
+<div style="color: black;">
+  <div class="header">
+    Routes
+  </div>
+  <div class="content" *ngFor="let route of arrayOfRoutes; let i = index">
+    <button class="routes" (click)="routeSelected(i)">
+      {{ route.routeNumber }}
+    </button>
+  </div>
+</div>

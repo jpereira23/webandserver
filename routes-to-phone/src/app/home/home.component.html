@@ -1,3 +1,21 @@
+<div class="aContainer">
+  <div class="wrapper">
+  <div class="body-uploader">
+    LOAD MANIFEST
+  </div>
+    <div class="button-wrapper">
+    <div class="alternate-text">
+    Take your saved load manifest, and upload it here to produce it in the app.
+    </div>
+    <input class="upload-input" type="file" ng2FileSelect [uploader]="uploader" (change)="uploading($event)">
+    <div class="work-around">
+      <button class="work-around-button" [disabled]="true">UPLOAD</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!--
 <div>
   <label for="manifests">Add Manifest:</label>
   <input type="file" ng2FileSelect [uploader]="uploader" (change)="uploading($event)">
@@ -22,3 +40,4 @@
       </tr>
   </table>
 </div>
+-->

@@ -24,6 +24,7 @@ var routesArray = [];
 var cartPositionsArray = [];
 var storedRoutes = [];
 var auditType = "";
+var diaHoy = new Date();
 
 var RouteDate = function(){
   this.day = 0;
@@ -60,15 +61,15 @@ var Item = function(){
 
 var aDate = function(){
   this.date = "";
-  this.auditors = []; 
   this.theDate = new Date();
-  this.routes = [];
   this.errors = [];
+  this.routes = [];
 };
 
 var Auditor = function(){
   this.firstName = "";
   this.lastName = "";
+  this.dates = [];
 }
 
 var aRoute = function(){
@@ -92,6 +93,8 @@ var aCartPosition = function(){
   this.pickerName = "";
   this.items = [];
   this.cartPositionName = "";
+  this.audited = false;
+  this.auditedItems = 0;
 };
 
 const sendError = (err, res) => {
@@ -129,6 +132,7 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
   var j = schedule.scheduleJob('9 * * *', function(fireDate){
     db.collection('route').remove({});
     routesArray = [];
+    diaHoy = new Date();
     
   });
 
@@ -153,53 +157,47 @@ MongoClient.connect('mongodb://localhost:27017/manifests', {
   router.post('/sendEndOfShift', (req, res) => {
     var auditor = req.body;
     var theDate = new aDate();	
-    var todaysDate = new Date();
+    diaHoy.setDate(2);
+    theDate.theDate = diaHoy;
+    theDate.errors = auditor.errors;
     var anAuditor = new Auditor();
     anAuditor.firstName = auditor.firstName;
-    console.log(anAuditor.firstName);
     anAuditor.lastName = auditor.lastName;
-    console.log(anAuditor.lastName);
-    theDate.theDate = new Date(auditor.clockIn);
-    console.log(theDate.theDate.toString());
-    theDate.errors = auditor.errors;
-    theDate.date = "" + todaysDate.getFullYear() + (todaysDate.getMonth()+1) +  todaysDate.getDate();
-    
-    if(checkIfAuditor(theDate, anAuditor) == false){
-      theDate.auditors.push(anAuditor);
+    for(var i = 0; i < auditor.auditedRoutes.length; i++)
+    {
+      addRouteToDate(theDate, auditor.auditedRoutes[i], auditor.firstName, auditor.lastName);
     }
-    for(var i = 0; i < auditor.auditedRoutes.length; i++){
-      var tmpRoute = parseInt(auditor.auditedRoutes[i].routeNumber);
-      tmpRoute = tmpRoute - 100;
-      var counter = 0;
-      while(tmpRoute >= 0)
-      {
-	tmpRoute = tmpRoute - 100;
-	counter++;
-      }
 
-      var year = 2000 + auditor.routes[i].date.year;
-      var d = new Date(year, auditor.auditedRoutes[i].date.month-1, auditor.auditedRoutes[i].date.day, 0, 0, 0);
-      organizeDateForRouteStore(theDate, counter, year, d, auditor.auditedRoutes[i], auditor.firstName, auditor.lastName);
-    }
-    db.collection('archives').find({ date: theDate.date }).toArray().then((val) => {
-      if(val.length != 0){
-      }
-      else{
-	db.collection('archives').save(theDate, function(err, zeDate){
+
+    db.collection('auditors').findOne({firstName: auditor.firstName, lastName: auditor.lastName}, function(err, doc) {
+      if(doc){
+	doc.dates.push(theDate);
+	console.log(doc.dates);
+	db.collection('auditors').update({'_id': ObjectID(doc._id)}, {'firstName': doc.firstName, 'lastName': doc.lastName, 'dates': doc.dates}, { $multi: true }, function(err, auditor){
 	  if(err){
 	    res.send(err);
 	  }else{
-	    res.json(zeDate);
+	    res.json(auditor);
+	    console.log("HELLO WORLD");
 	  }
 	});
       }
-    }).catch((err) => {
-      sendError(err, res);
-    });	
+      else{
+	console.log("NEVERMIND");
+	anAuditor.dates.push(theDate);
+	db.collection('auditors').save(anAuditor, function(err, auditor){
+	  if(err){
+	    res.send(err);
+	  }else{
+	    res.json(auditor);
+	  }
+	});
+      }
+    });
   });
 
-  router.get('/theArchives', (req, res) => { 
-    db.collection('archives').find().toArray().then((theArchives) => {
+  router.get('/theAuditors', (req, res) => { 
+    db.collection('auditors').find().toArray().then((theArchives) => {
       response.data = theArchives;
       res.json(response);
     }).catch((err) => {
@@ -337,44 +335,7 @@ function checkIfAuditor(theDate, theAuditor){
 }
 
 function organizeDateForRouteStore(theDate, counter, year, date, route, firstName, lastName){
-  switch(counter){
-	case 1:
-	  if(date.getDay() == 0){
-	    addRouteToDate(theDate, route, firstName, lastName);
-	  }
-	  break;
-	case 2:
-	  if(date.getDay() == 1){
-	    addRouteToDate(theDate, route, firstName, lastName);
-	  }
-	  break;
-	case 3:
-	  if(date.getDay() == 2){
-	    addRouteToDate(theDate, route, firstName, lastName);
-	  }
-	  break;
-	case 4: 
-	  if(date.getDay() == 3){
-	    addRouteToDate(theDate, route, firstName, lastName);
-	  }
-	  break;
-	case 5:
-	  if(date.getDay() == 4){
-	    addRouteToDate(theDate, route, firstName, lastName);
-	  }
-	  break;
-	case 6: 
-	  if(date.getDay() == 5){
-	    addRouteToDate(theDate, route, firstName, lastName);
-	  }
-	  break;
-	case 7: 
-	  if(date.getDay() == 6){
-	    addRouteToDate(theDate, route, firstName, lastName);
-	  }
-	  break;
-      }
-  
+	   
 }
 
 function addRouteToDate(theDate, route, firstName, lastName){
@@ -392,6 +353,8 @@ function addRouteToDate(theDate, route, firstName, lastName){
 	var theCartPosition = new aCartPosition();
 	theCartPosition.pickerName = route.statuss[i].stops[j].cartPositions[k].picker.name;
 	theCartPosition.cartPositionName = route.statuss[i].stops[j].cartPositions[k].cartPosition;
+	theCartPosition.audited = route.statuss[i].stops[j].cartPositions[k].audited;
+	theCartPosition.auditedItems = route.statuss[i].stops[j].cartPositions[k].auditedItems;
 	for(var l = 0; l < route.statuss[i].stops[j].cartPositions[k].items.length; l++){
 	  var aItem = new Item();
 	  aItem.itemName = route.statuss[i].stops[j].cartPositions[k].items[l].itemName;

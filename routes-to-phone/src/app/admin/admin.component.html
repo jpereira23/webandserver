@@ -1,22 +1,11 @@
-<div>
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Auditor
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu">
-      <li *ngFor="let auditor of arrayOfAuditors; let i = index"><a href="#" (click)="setAuditor(i); false">{{ auditor.firstName }} {{ auditor.lastName }}</a></li>
-    </ul>
+<div class="aContainer">
+  <div class="filterWrapper">
+    <popover-content #myPopover placement="bottom" [closeOnClickOutside]="true">
+      <popover-filter [arrayOfAuditors]="arrayOfAuditors" (selectedMonth)="setMonth($event)" (selectedAuditor)="setAuditor($event)"></popover-filter>
+    </popover-content>
+    <button class="aFilter" [popover]="myPopover">Filter</button>
   </div>
-
-  <div *ngIf="auditor != null">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Month
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-	<li *ngFor="let months of auditor.arrayOfMonths; let j = index"><a href="#" (click)="setMonth(j); false">{{ months }}</a></li>
-      </ul>
-    </div>
-  </div>
-  <div *ngIf="aMonth != 0">
-    <button class="btn btn-primary" type="button" (click)="compileGraph()">Compile Graphs</button>
-  </div>	
 </div>
+<div>
+  <chart [data]="data" [backgroundColors]="backgroundColors" [borderColors]="borderColors" [labels]="labels" [label]="label" [errorData]="errorData" [errorBackgroundColors]="errorBackgroundColors" [errorBorderColors]="errorBorderColors" [errorLabel]="errorLabel"></chart> 
+  </div>
